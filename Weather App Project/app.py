@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 import requests
+from PIL import Image, ImageTk
 
 api_key = '3253651e650882d0741fca5531df5bbc'
 
@@ -25,7 +26,13 @@ def search():
 
     if weather:
         location_lbl['text'] = " ".join(w.capitalize() for w in city.split()) + ', ' + weather[5]
-        img['bitmap'] = f'Icons1/{weather[4]}@2x.png'
+        
+        image_path = f'Icons1/{weather[4]}@2x.png'
+        image = Image.open(image_path)
+        photo = ImageTk.PhotoImage(image)
+        img.config(image=photo)
+        img.image = photo
+        
         temp_lbl['text'] = f'{weather[1]}°F, {round(((weather[1] - 32) * (5/9)))}°C'
         weather_lbl['text'] = " ".join(w.capitalize() for w in weather[0].split())
     else:
@@ -36,6 +43,8 @@ weather_app.title("Weather App")
 weather_app.geometry('500x350')
 weather_app.resizable(False, False)
 
+weather_app.config(bg='lightblue')
+
 city_text = StringVar()
 city_entry = Entry(weather_app, textvariable=city_text)
 city_entry.pack()
@@ -43,16 +52,16 @@ city_entry.pack()
 search_button = Button(weather_app, text='Search City', width=12, command=search)
 search_button.pack()
 
-location_lbl = Label(weather_app, text='', font=('bold', 20))
+location_lbl = Label(weather_app, text='', font=('bold', 20), bg='lightblue', bd=0)
 location_lbl.pack()
 
-img = Label(weather_app, image='')
+img = Label(weather_app, bg='lightblue', bd=0)
 img.pack()
 
-temp_lbl = Label(weather_app, text='', font=('normal', 14))
+temp_lbl = Label(weather_app, text='', font=('normal', 14), bg='lightblue', bd=0)
 temp_lbl.pack()
 
-weather_lbl = Label(weather_app, text='', font=('normal', 14))
+weather_lbl = Label(weather_app, text='', font=('normal', 14), bg='lightblue', bd=0)
 weather_lbl.pack()
 
 weather_app.mainloop()
